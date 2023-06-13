@@ -10,5 +10,6 @@ data class RicKAndMorty(
     val name: String,
     val status: String,
     val species: String,
-    val gender: String
+    val gender: String,
+    val episodeList: List<String>
 )

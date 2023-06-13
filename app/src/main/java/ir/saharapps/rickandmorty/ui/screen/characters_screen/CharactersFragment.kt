@@ -13,6 +13,7 @@ class CharactersFragment: Fragment(R.layout.fragment_characters) {
         val binding = FragmentCharactersBinding.bind(view)
 
 
+
     }
 
 }
