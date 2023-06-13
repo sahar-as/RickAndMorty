@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ir.saharapps.rickandmorty.databinding.CharacterItemBinding
 import ir.saharapps.rickandmorty.domain.model.RicKAndMorty
 
-class CharactersAdapter: ListAdapter<RicKAndMorty, CharactersAdapter.RickMortyViewHolder>(DiffCallBack()){
+class CharactersAdapter(private val onClick: (id: Int) -> Unit): ListAdapter<RicKAndMorty, CharactersAdapter.RickMortyViewHolder>(DiffCallBack()){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RickMortyViewHolder {
         val view = CharacterItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -22,8 +22,12 @@ class CharactersAdapter: ListAdapter<RicKAndMorty, CharactersAdapter.RickMortyVi
 
     inner class RickMortyViewHolder(private val binding: CharacterItemBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(ricKAndMorty: RicKAndMorty){
-            //assign image with glide
+            //Todo assign image with glide
             binding.txtCharacterName.text = ricKAndMorty.name
+
+            binding.root.setOnClickListener {
+                onClick(ricKAndMorty.id)
+            }
         }
     }
 
