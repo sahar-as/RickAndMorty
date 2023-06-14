@@ -5,9 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import ir.saharapps.rickandmorty.databinding.ItemCharacterBinding
 import ir.saharapps.rickandmorty.domain.model.Character
+import ir.saharapps.rickandmorty.utils.*
 
 class CharactersAdapter(private val onClick: (id: Int) -> Unit): ListAdapter<Character, CharactersAdapter.CharactersViewHolder>(DiffCallBack()){
 
@@ -23,9 +23,11 @@ class CharactersAdapter(private val onClick: (id: Int) -> Unit): ListAdapter<Cha
 
     inner class CharactersViewHolder(private val binding: ItemCharacterBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(character: Character){
-            Glide.with(binding.root.context)
-                .load(character.image)
-                .into(binding.imgCharacterPic)
+//            Glide.with(binding.root.context)
+//                .load(character.image)
+//                .into(binding.imgCharacterPic)
+//
+            binding.imgCharacterPic.loadImageExt(character.image)
             binding.txtCharacterName.text = character.name
 
             binding.root.setOnClickListener {

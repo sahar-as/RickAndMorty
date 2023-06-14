@@ -5,7 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import ir.saharapps.rickandmorty.data.remote.RickAndMortyApi
-import ir.saharapps.rickandmorty.utils.Constants.RICK_AND_MORTY_URL
+import ir.saharapps.rickandmorty.utils.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -18,7 +18,7 @@ object NetworkModule {
     @Provides
     fun provideRickMortyRetrofit(): RickAndMortyApi{
         return Retrofit.Builder()
-            .baseUrl(RICK_AND_MORTY_URL)
+            .baseUrl(APIs.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(RickAndMortyApi::class.java)
