@@ -5,14 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import ir.saharapps.rickandmorty.databinding.MoreInfoItemBinding
-import ir.saharapps.rickandmorty.domain.model.Episode
-import ir.saharapps.rickandmorty.domain.model.RicKAndMorty
+import ir.saharapps.rickandmorty.databinding.ItemMoreInfoBinding
 
 class MoreInfoAdapter: ListAdapter<List<String>, MoreInfoAdapter.MoreInfoViewHolder>(MoreInfoDiffCallBack()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoreInfoViewHolder {
-        val view = MoreInfoItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view = ItemMoreInfoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MoreInfoViewHolder(view)
     }
 
@@ -21,7 +19,7 @@ class MoreInfoAdapter: ListAdapter<List<String>, MoreInfoAdapter.MoreInfoViewHol
         holder.bind(currentItem)
     }
 
-    inner class MoreInfoViewHolder(private val binding: MoreInfoItemBinding): RecyclerView.ViewHolder(binding.root){
+    inner class MoreInfoViewHolder(private val binding: ItemMoreInfoBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(episode: List<String>){
             //todo bind episode info to the text
         }

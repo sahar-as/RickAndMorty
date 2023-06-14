@@ -1,6 +1,9 @@
 package ir.saharapps.rickandmorty.data.dto
 
-data class RickAndMortyDto(
+import androidx.annotation.Keep
+
+@Keep
+data class CharacterApiResult(
     val info: Info,
     val results: List<Result>
 )
