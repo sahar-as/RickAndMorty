@@ -1,6 +1,6 @@
 package ir.saharapps.rickandmorty.data.dto
 
-data class RickAndMortyDto(
+data class CharacterApiResult(
     val info: Info,
     val results: List<Result>
 )

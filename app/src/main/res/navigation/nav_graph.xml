@@ -17,5 +17,10 @@
     <fragment
         android:id="@+id/moreInfoFragment"
         android:name="ir.saharapps.rickandmorty.ui.screen.more_info_screen.MoreInfoFragment"
-        android:label="MoreInfoFragment" />
+        android:label="MoreInfoFragment"
+        tools:layout="@layout/fragment_more_info">
+        <argument
+            android:name="CharacterId"
+            app:argType="integer" />
+    </fragment>
 </navigation>
