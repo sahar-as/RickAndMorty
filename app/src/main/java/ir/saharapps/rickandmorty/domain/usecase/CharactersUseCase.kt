@@ -2,17 +2,28 @@ package ir.saharapps.rickandmorty.domain.usecase
 
 import ir.saharapps.rickandmorty.data.repository.CharactersRemoteRepositoryImpl
 import ir.saharapps.rickandmorty.domain.model.Character
+import ir.saharapps.rickandmorty.domain.model.DetailCharacter
 import javax.inject.Inject
 
 class CharactersUseCase @Inject constructor(
-    private val repositoryImpl: CharactersRemoteRepositoryImpl
+    private val characterRepository: CharactersRemoteRepositoryImpl
 ){
     suspend fun getAllCharacters(): List<Character>{
-        val repositoryResult = repositoryImpl.getCharacters()
+        val repositoryResult = characterRepository.getCharacters()
         val characterList = mutableListOf<Character>()
         for(item in repositoryResult){
             characterList.add(Character(item.id, item.name, item.image))
         }
         return characterList
+    }
+
+    suspend fun getOneCharacter(id: Int): DetailCharacter {
+        val repositoryResult = characterRepository.getCharacterById(id)
+
+        return DetailCharacter(
+            repositoryResult.id, repositoryResult.name,
+            repositoryResult.image, repositoryResult.status, repositoryResult.species,
+            repositoryResult.gender, repositoryResult.episode
+        )
     }
 }

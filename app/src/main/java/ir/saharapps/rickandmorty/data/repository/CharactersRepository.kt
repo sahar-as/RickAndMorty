@@ -5,4 +5,5 @@ import ir.saharapps.rickandmorty.data.dto.Result
 interface CharactersRepository {
 
     suspend fun getCharacters(): List<Result>
+    suspend fun getCharacterById(id: Int): Result
 }

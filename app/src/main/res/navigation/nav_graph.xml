@@ -16,9 +16,9 @@
     </fragment>
     <fragment
         android:id="@+id/moreInfoFragment"
-        android:name="ir.saharapps.rickandmorty.ui.screen.more_info_screen.MoreInfoFragment"
+        android:name="ir.saharapps.rickandmorty.ui.screen.detail_character.DetailCharacterFragment"
         android:label="MoreInfoFragment"
-        tools:layout="@layout/fragment_more_info">
+        tools:layout="@layout/fragment_detail_character">
         <argument
             android:name="CharacterId"
             app:argType="integer" />

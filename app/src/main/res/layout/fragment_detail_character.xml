@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ui.screen.more_info_screen.MoreInfoFragment">
+    tools:context="ui.screen.detail_character.DetailCharacterFragment">
 
     <ImageView
         android:id="@+id/img_character_picture"

@@ -9,6 +9,10 @@ class CharactersRemoteRepositoryImpl @Inject constructor(
 ): CharactersRepository {
 
     override suspend fun getCharacters(): List<Result> {
-        return api.getCharacter().results
+        return api.getCharacters().results
+    }
+
+    override suspend fun getCharacterById(id: Int): Result {
+        return api.getCharacterById(id)
     }
 }
