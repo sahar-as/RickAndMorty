@@ -23,11 +23,7 @@ class CharactersAdapter(private val onClick: (id: Int) -> Unit): ListAdapter<Cha
 
     inner class CharactersViewHolder(private val binding: ItemCharacterBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(character: Character){
-//            Glide.with(binding.root.context)
-//                .load(character.image)
-//                .into(binding.imgCharacterPic)
-//
-            binding.imgCharacterPic.loadImageExt(character.image)
+            binding.imgCharacterPic.setImage(character.image)
             binding.txtCharacterName.text = character.name
 
             binding.root.setOnClickListener {
