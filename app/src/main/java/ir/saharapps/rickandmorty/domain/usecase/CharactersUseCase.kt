@@ -3,6 +3,7 @@ package ir.saharapps.rickandmorty.domain.usecase
 import ir.saharapps.rickandmorty.data.repository.CharactersRemoteRepositoryImpl
 import ir.saharapps.rickandmorty.domain.model.Character
 import ir.saharapps.rickandmorty.domain.model.DetailCharacter
+import ir.saharapps.rickandmorty.domain.model.Episode
 import javax.inject.Inject
 
 class CharactersUseCase @Inject constructor(
@@ -17,7 +18,7 @@ class CharactersUseCase @Inject constructor(
         return characterList
     }
 
-    suspend fun getOneCharacter(id: Int): DetailCharacter {
+    suspend fun getCharacterById(id: Int): DetailCharacter {
         val repositoryResult = characterRepository.getCharacterById(id)
 
         return DetailCharacter(
@@ -25,5 +26,15 @@ class CharactersUseCase @Inject constructor(
             repositoryResult.image, repositoryResult.status, repositoryResult.species,
             repositoryResult.gender, repositoryResult.episode
         )
+    }
+
+    suspend fun getEpisodeList(id: Int): List<Episode>{
+        val repositoryResult = characterRepository.getCharacterById(id)
+        val episodes = mutableListOf<Episode>()
+        for(episode in repositoryResult.episode){
+            val id = episode.split("episode/")[1]
+            episodes.add(Episode(id.toInt(), episode))
+        }
+        return episodes
     }
 }

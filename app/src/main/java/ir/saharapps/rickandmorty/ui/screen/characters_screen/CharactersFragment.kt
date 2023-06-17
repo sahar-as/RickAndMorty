@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import ir.saharapps.rickandmorty.R
 import ir.saharapps.rickandmorty.databinding.FragmentCharactersBinding
-import kotlinx.coroutines.flow.collect
+import ir.saharapps.rickandmorty.domain.model.ViewState
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -33,29 +33,21 @@ class CharactersFragment: Fragment(R.layout.fragment_characters) {
             adapter = charactersAdapter
         }
 
-        lifecycleScope.launch {
-            charactersViewModel.characterList.collect { characterList ->
-                charactersAdapter.submitList(characterList)
-            }
-        }
-
-        lifecycleScope.launch {
-            charactersViewModel.viewStateResult.collect() { viewState ->
-                when(viewState){
-                    CharactersViewModel.ViewState.ConnectionError -> {
-                        //Todo read from database
+        lifecycleScope.launch{
+            charactersViewModel.viewState.collect{state->
+                when(state.viewState){
+                    ViewState.INITIAL -> {binding.pbLoading.visibility = View.INVISIBLE}
+                    ViewState.LOADING -> {binding.pbLoading.visibility = View.VISIBLE}
+                    ViewState.SUCCESS -> {
+                        binding.pbLoading.visibility = View.INVISIBLE
+                        charactersAdapter.submitList(state.characters)
                     }
-                    is CharactersViewModel.ViewState.Loading -> {
-                        if(viewState.loadState){
-                            binding.pbLoading.visibility = View.VISIBLE
-                        }else{
-                            binding.pbLoading.visibility = View.INVISIBLE
-                        }
+                    ViewState.FAILED -> {
+                        //todo read from database
                     }
                 }
             }
         }
-
     }
 
 }

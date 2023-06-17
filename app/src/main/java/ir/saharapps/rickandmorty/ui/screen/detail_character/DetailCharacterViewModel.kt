@@ -1,43 +1,48 @@
 package ir.saharapps.rickandmorty.ui.screen.detail_character
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ir.saharapps.rickandmorty.domain.model.DetailCharacter
-import ir.saharapps.rickandmorty.domain.model.Episode
+import ir.saharapps.rickandmorty.domain.model.DetailCharacterViewState
+import ir.saharapps.rickandmorty.domain.model.ViewState
 import ir.saharapps.rickandmorty.domain.usecase.CharactersUseCase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.net.ConnectException
+import java.net.SocketTimeoutException
 import javax.inject.Inject
 
 @HiltViewModel
 class DetailCharacterViewModel @Inject constructor(
     private val useCase: CharactersUseCase,
-    private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
-    val id = savedStateHandle.get<Int>("CharacterId")
+    private val _viewState = MutableStateFlow(DetailCharacterViewState())
+    val viewState: StateFlow<DetailCharacterViewState> = _viewState.asStateFlow()
 
-    private val _detailCharacter = MutableStateFlow<DetailCharacter?>(null)
-    val detailCharacter: StateFlow<DetailCharacter?> = _detailCharacter
-
-    private val _episodeList = MutableStateFlow<List<Episode>>(emptyList())
-    val episodeList: StateFlow<List<Episode>> = _episodeList
-
-    fun getCharacterDetail(){
-        viewModelScope.launch {
-            id?.let {
-                _detailCharacter.value = useCase.getOneCharacter(id)
-
-                val episodes = mutableListOf<Episode>()
-                for(episode in _detailCharacter.value!!.episode){
-                    val id = episode.split("episode/")[1]
-                    episodes.add(Episode(id.toInt(), episode))
+    fun getCharacterDetail(characterId: Int){
+        viewModelScope.launch(Dispatchers.IO) {
+            _viewState.value = DetailCharacterViewState().update { copy(viewState = ViewState.LOADING) }
+            try {
+                val characterInfo = useCase.getCharacterById(characterId)
+                val episode = useCase.getEpisodeList(characterId)
+                _viewState.value = DetailCharacterViewState().update {
+                    copy(viewState = ViewState.SUCCESS, detailCharacter = characterInfo, episodeList = episode)
                 }
-                _episodeList.value = episodes
+            }catch (e: Exception){
+                _viewState.value = DetailCharacterViewState().update { copy(viewState = ViewState.FAILED) }
             }
         }
     }
 }
+
+fun <T> T.update(newState: T.() -> T): T{
+    return newState()
+}
+
+//fun <T> T.updateState(newState: T.() -> T) {
+//    val value = newState
+//}

@@ -3,15 +3,14 @@ package ir.saharapps.rickandmorty.ui.screen.characters_screen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import ir.saharapps.rickandmorty.domain.model.Character
+import ir.saharapps.rickandmorty.domain.model.CharacterViewState
+import ir.saharapps.rickandmorty.domain.model.ViewState
 import ir.saharapps.rickandmorty.domain.usecase.CharactersUseCase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,30 +18,29 @@ class CharactersViewModel @Inject constructor(
     private val characterUseCase: CharactersUseCase
 ): ViewModel() {
 
-    private val _charactersList = MutableStateFlow<List<Character>>(emptyList())
-    val characterList: StateFlow<List<Character>> = _charactersList
-
-    private val viewStateChannel = Channel<ViewState>()
-    val viewStateResult = viewStateChannel.receiveAsFlow()
+    private val _viewState = MutableStateFlow(CharacterViewState())
+    val viewState: StateFlow<CharacterViewState> = _viewState.asStateFlow()
     fun getCharacters(){
         viewModelScope.launch(Dispatchers.IO) {
-            viewStateChannel.send(ViewState.Loading(true))
+            _viewState.value = CharacterViewState().update { copy(viewState = ViewState.LOADING) }
             try {
-                _charactersList.value = characterUseCase.getAllCharacters()
-                viewStateChannel.send(ViewState.Loading(false))
+                val characters = characterUseCase.getAllCharacters()
+                _viewState.value = _viewState.value.update {
+                    copy(viewState = ViewState.SUCCESS, characters = characters)
+                }
             }catch (e: Exception){
-                viewStateChannel.send(ViewState.ConnectionError)
-                viewStateChannel.send(ViewState.Loading(false))
+                _viewState.value = _viewState.value.update{copy(viewState = ViewState.FAILED)}
             }
-
         }
     }
 
-    sealed class ViewState(){
-        class Loading(val loadState: Boolean): ViewState()
-        object ConnectionError: ViewState()
-    }
-
-
-
 }
+
+fun <T> T.update(newState: T.() -> T): T{
+    return newState()
+}
+
+//fun <T> T.updateState(newState: T.() -> T) {
+//    val value = newState
+//}
+
