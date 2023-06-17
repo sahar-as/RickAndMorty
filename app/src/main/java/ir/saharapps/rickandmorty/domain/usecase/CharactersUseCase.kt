@@ -38,7 +38,7 @@ class CharactersUseCase @Inject constructor(
         val episodes = mutableListOf<Episode>()
         for(episode in repositoryResult.episode){
             val id = episode.split("episode/").lastOrNull()
-            id?.let {
+            if(!id.isNullOrEmpty()){
                 episodes.add(Episode(id.toInt(), episode))
             }
         }
