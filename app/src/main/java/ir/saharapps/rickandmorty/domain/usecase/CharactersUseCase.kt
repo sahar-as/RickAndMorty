@@ -7,10 +7,10 @@ import ir.saharapps.rickandmorty.domain.model.Episode
 import javax.inject.Inject
 
 class CharactersUseCase @Inject constructor(
-    private val characterRepository: CharactersRemoteRepositoryImpl
+    private val characterRemoteRepository: CharactersRemoteRepositoryImpl
 ){
     suspend fun getAllCharacters(): List<Character>{
-        val repositoryResult = characterRepository.getCharacters()
+        val repositoryResult = characterRemoteRepository.getCharacters()
         val characterList = mutableListOf<Character>()
         for(item in repositoryResult){
             characterList.add(Character(item.id, item.name, item.image))
@@ -19,7 +19,7 @@ class CharactersUseCase @Inject constructor(
     }
 
     suspend fun getCharacterById(id: Int): DetailCharacter {
-        val repositoryResult = characterRepository.getCharacterById(id)
+        val repositoryResult = characterRemoteRepository.getCharacterById(id)
 
         return DetailCharacter(
             repositoryResult.id, repositoryResult.name,
@@ -29,10 +29,10 @@ class CharactersUseCase @Inject constructor(
     }
 
     suspend fun getEpisodeList(id: Int): List<Episode>{
-        val repositoryResult = characterRepository.getCharacterById(id)
+        val repositoryResult = characterRemoteRepository.getCharacterById(id)
         val episodes = mutableListOf<Episode>()
         for(episode in repositoryResult.episode){
-            val id = episode.split("episode/")[1]
+            val id = episode.split("episode/").getOrElse(1){""}
             episodes.add(Episode(id.toInt(), episode))
         }
         return episodes

@@ -1,4 +1,4 @@
-package ir.saharapps.rickandmorty.ui.screen.detail_character
+package ir.saharapps.rickandmorty.ui.screen.detailcharacter
 
 import android.os.Bundle
 import android.view.View
@@ -11,6 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import ir.saharapps.rickandmorty.R
 import ir.saharapps.rickandmorty.databinding.FragmentDetailCharacterBinding
 import ir.saharapps.rickandmorty.domain.model.DetailCharacter
+import ir.saharapps.rickandmorty.domain.model.Episode
 import ir.saharapps.rickandmorty.domain.model.ViewState
 import ir.saharapps.rickandmorty.utils.load
 import kotlinx.coroutines.launch
@@ -19,12 +20,16 @@ import kotlinx.coroutines.launch
 class DetailCharacterFragment: Fragment(R.layout.fragment_detail_character){
 
     private lateinit var binding: FragmentDetailCharacterBinding
+
+    private val detailCharacterAdapter = DetailCharacterAdapter()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentDetailCharacterBinding.bind(view)
 
         val detailCharacterViewModel: DetailCharacterViewModel by viewModels()
-        val detailCharacterAdapter = DetailCharacterAdapter()
+
+
+
         val args: DetailCharacterFragmentArgs by navArgs()
 
         detailCharacterViewModel.getCharacterDetail(args.CharacterId)
@@ -40,11 +45,7 @@ class DetailCharacterFragment: Fragment(R.layout.fragment_detail_character){
                 when(viewState.viewState){
                     ViewState.INITIAL -> {binding.pbLoading.visibility = View.INVISIBLE}
                     ViewState.LOADING -> {binding.pbLoading.visibility = View.VISIBLE}
-                    ViewState.SUCCESS -> {
-                        binding.pbLoading.visibility = View.INVISIBLE
-                        updateUiValue(viewState.detailCharacter)
-                        detailCharacterAdapter.submitList(viewState.episodeList)
-                    }
+                    ViewState.SUCCESS -> { onSuccessState(viewState.detailCharacter!!, viewState.episodeList) }
                     ViewState.FAILED -> {
                         //todo load from database
                     }
@@ -53,6 +54,11 @@ class DetailCharacterFragment: Fragment(R.layout.fragment_detail_character){
         }
     }
 
+    private fun onSuccessState(detailCharacter: DetailCharacter, episode: List<Episode>){
+        binding.pbLoading.visibility = View.INVISIBLE
+        updateUiValue(detailCharacter)
+        detailCharacterAdapter.submitList(episode)
+    }
     private fun updateUiValue(detailCharacter: DetailCharacter){
         binding.apply {
             imgCharacterPicture.load(detailCharacter.image)

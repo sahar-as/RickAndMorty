@@ -1,4 +1,4 @@
-package ir.saharapps.rickandmorty.ui.screen.detail_character
+package ir.saharapps.rickandmorty.ui.screen.detailcharacter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

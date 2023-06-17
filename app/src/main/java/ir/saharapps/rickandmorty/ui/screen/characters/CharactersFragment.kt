@@ -1,4 +1,4 @@
-package ir.saharapps.rickandmorty.ui.screen.characters_screen
+package ir.saharapps.rickandmorty.ui.screen.characters
 
 import android.os.Bundle
 import android.view.View
@@ -17,10 +17,12 @@ import kotlinx.coroutines.launch
 class CharactersFragment: Fragment(R.layout.fragment_characters) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentCharactersBinding.bind(view)
 
         val charactersViewModel: CharactersViewModel by viewModels()
+
         val charactersAdapter = CharactersAdapter{characterId ->
             val action = CharactersFragmentDirections.actionCharactersFragmentToMoreInfoFragment(characterId)
             findNavController().navigate(action)
@@ -49,5 +51,4 @@ class CharactersFragment: Fragment(R.layout.fragment_characters) {
             }
         }
     }
-
 }
