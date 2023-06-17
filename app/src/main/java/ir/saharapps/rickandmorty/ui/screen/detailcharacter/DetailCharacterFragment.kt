@@ -48,7 +48,7 @@ class DetailCharacterFragment: Fragment(R.layout.fragment_detail_character){
                     //As I implement detailCharacter nullable in its dataclass (in order to prevent dummy data),
                     //I have to check its null state here
                     ViewState.SUCCESS -> {
-                        viewState.detailCharacter?.let { onSuccessState(it, viewState.episodeList) }
+                        onSuccessState( viewState.detailCharacter, viewState.episodeList)
                     }
                     ViewState.FAILED -> {
                         //todo handel fail state
@@ -58,9 +58,9 @@ class DetailCharacterFragment: Fragment(R.layout.fragment_detail_character){
         }
     }
 
-    private fun onSuccessState(detailCharacter: DetailCharacter, episode: List<Episode>){
+    private fun onSuccessState(detailCharacter: DetailCharacter?, episode: List<Episode>){
         binding.pbLoading.visibility = View.INVISIBLE
-        updateUiValue(detailCharacter)
+        detailCharacter?.let { updateUiValue(detailCharacter) }
         detailCharacterAdapter.submitList(episode)
     }
     private fun updateUiValue(detailCharacter: DetailCharacter){
