@@ -1,9 +1,9 @@
 package ir.saharapps.rickandmorty.data.repository
 
-import ir.saharapps.rickandmorty.data.dto.Character
+import ir.saharapps.rickandmorty.data.local.CharacterEntity
 
 interface CharactersRepository {
 
-    suspend fun getCharacters(): List<Character>
-    suspend fun getCharacterById(id: Int): Character
+    suspend fun getCharacters(): List<CharacterEntity>
+    suspend fun getCharacterById(id: Int): CharacterEntity
 }

@@ -2,9 +2,10 @@ package ir.saharapps.rickandmorty.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import ir.saharapps.rickandmorty.data.dto.Character
+import androidx.room.TypeConverters
 
-//@Database(entities = [Character::class], version = 1)
-//abstract class CharacterDatabase: RoomDatabase() {
-//    abstract fun characterDao(): CharacterDao
-//}
+@Database(entities = [CharacterEntity::class], version = 1)
+@TypeConverters(DatabaseConverter::class)
+abstract class CharacterDatabase: RoomDatabase() {
+    abstract fun characterDao(): CharacterDao
+}

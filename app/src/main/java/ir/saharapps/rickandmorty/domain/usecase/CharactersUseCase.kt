@@ -12,6 +12,7 @@ class CharactersUseCase @Inject constructor(
     suspend fun getAllCharacters(): List<Character>{
         val repositoryResult = characterRemoteRepository.getCharacters()
         val characterList = mutableListOf<Character>()
+
         for(item in repositoryResult){
             characterList.add(Character(item.id, item.name, item.image))
         }

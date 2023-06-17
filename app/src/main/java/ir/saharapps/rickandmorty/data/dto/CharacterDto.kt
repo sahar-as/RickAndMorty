@@ -5,12 +5,10 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Keep
-@Entity(tableName = "character")
-data class Character(
+data class CharacterDto(
     val created: String,
     val episode: List<String>,
     val gender: String,
-    @PrimaryKey
     val id: Int,
     val image: String,
     val location: Location,
