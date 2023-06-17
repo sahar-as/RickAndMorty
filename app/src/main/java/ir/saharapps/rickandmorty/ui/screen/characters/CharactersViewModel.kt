@@ -19,18 +19,19 @@ class CharactersViewModel @Inject constructor(
     private val characterUseCase: CharactersUseCase
 ): ViewModel() {
 
-    private val _viewState = MutableStateFlow(CharacterViewState())
-    val viewState: StateFlow<CharacterViewState> = _viewState.asStateFlow()
+    private val _viewStateFlow = MutableStateFlow(CharacterViewState())
+    val viewStateFlow: StateFlow<CharacterViewState> = _viewStateFlow.asStateFlow()
+
     fun getCharacters(){
         viewModelScope.launch(Dispatchers.IO) {
-            _viewState.updateState { copy(viewState = ViewState.LOADING) }
+            _viewStateFlow.updateState { copy(viewState = ViewState.LOADING) }
             try {
                 val characters = characterUseCase.getAllCharacters()
-                _viewState.updateState {
+                _viewStateFlow.updateState {
                     copy(viewState = ViewState.SUCCESS, characters = characters)
                 }
             }catch (e: Exception){
-                _viewState.updateState{copy(viewState = ViewState.FAILED)}
+                _viewStateFlow.updateState{copy(viewState = ViewState.FAILED)}
             }
         }
     }

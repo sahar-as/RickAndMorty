@@ -36,7 +36,7 @@ class CharactersFragment: Fragment(R.layout.fragment_characters) {
         }
 
         lifecycleScope.launch{
-            charactersViewModel.viewState.collect{state->
+            charactersViewModel.viewStateFlow.collect{ state->
                 when(state.viewState){
                     ViewState.INITIAL -> {binding.pbLoading.visibility = View.INVISIBLE}
                     ViewState.LOADING -> {binding.pbLoading.visibility = View.VISIBLE}

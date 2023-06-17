@@ -41,13 +41,17 @@ class DetailCharacterFragment: Fragment(R.layout.fragment_detail_character){
 
 
         lifecycleScope.launch {
-            detailCharacterViewModel.viewState.collect{viewState ->
+            detailCharacterViewModel.viewStateFlow.collect{ viewState ->
                 when(viewState.viewState){
                     ViewState.INITIAL -> {binding.pbLoading.visibility = View.INVISIBLE}
                     ViewState.LOADING -> {binding.pbLoading.visibility = View.VISIBLE}
-                    ViewState.SUCCESS -> { onSuccessState(viewState.detailCharacter!!, viewState.episodeList) }
+                    //As I implement detailCharacter nullable in its dataclass (in order to prevent dummy data),
+                    //I have to check its null state here
+                    ViewState.SUCCESS -> {
+                        viewState.detailCharacter?.let { onSuccessState(it, viewState.episodeList) }
+                    }
                     ViewState.FAILED -> {
-                        //todo load from database
+                        //todo handel fail state
                     }
                 }
             }

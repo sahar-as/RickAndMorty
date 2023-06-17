@@ -11,12 +11,7 @@ class CharactersRemoteRepositoryImpl @Inject constructor(
 
     override suspend fun getCharacters(): List<CharacterEntity> {
         val characterDtoList = api.getCharacters().character
-        val characterDataList = convertCharacterDataClass(characterDtoList)
-
-//        for(character in characterList){
-//            database.characterDao().addCharacter(character)
-//        }
-        return characterDataList
+        return convertCharacterDataClass(characterDtoList)
     }
 
     override suspend fun getCharacterById(id: Int): CharacterEntity {
@@ -25,22 +20,7 @@ class CharactersRemoteRepositoryImpl @Inject constructor(
     }
 
     private fun convertCharacterDataClass(characterDto: List<CharacterDto>): List<CharacterEntity>{
-        return characterDto.map { characterDto ->
-            CharacterEntity(
-                id = characterDto.id,
-                created = characterDto.created,
-                episode = characterDto.episode,
-                gender = characterDto.gender,
-                image = characterDto.image,
-                locationName = characterDto.location.name,
-                locationUrl = characterDto.location.url,
-                name = characterDto.name,
-                species = characterDto.species,
-                status = characterDto.status,
-                type = characterDto.type,
-                url = characterDto.url
-            )
-        }
+        return characterDto.map { convertCharacterDataClass(it) }
     }
     private fun convertCharacterDataClass(characterDto: CharacterDto): CharacterEntity{
         return CharacterEntity(

@@ -19,21 +19,21 @@ class DetailCharacterViewModel @Inject constructor(
     private val useCase: CharactersUseCase,
 ): ViewModel() {
 
-    private val _viewState = MutableStateFlow(DetailCharacterViewState())
-    val viewState: StateFlow<DetailCharacterViewState> = _viewState.asStateFlow()
+    private val _viewStateFlow = MutableStateFlow(DetailCharacterViewState())
+    val viewStateFlow: StateFlow<DetailCharacterViewState> = _viewStateFlow.asStateFlow()
 
     fun getCharacterDetail(characterId: Int){
 
         viewModelScope.launch(Dispatchers.IO) {
-            _viewState.updateState { copy(viewState = ViewState.LOADING) }
+            _viewStateFlow.updateState { copy(viewState = ViewState.LOADING) }
             try {
                 val characterInfo = useCase.getCharacterById(characterId)
                 val episode = useCase.getEpisodeList(characterId)
-                _viewState.updateState {
+                _viewStateFlow.updateState {
                     copy(viewState = ViewState.SUCCESS, detailCharacter = characterInfo, episodeList = episode)
                 }
             }catch (e: Exception){
-                _viewState.updateState { copy(viewState = ViewState.FAILED) }
+                _viewStateFlow.updateState { copy(viewState = ViewState.FAILED) }
             }
         }
 
