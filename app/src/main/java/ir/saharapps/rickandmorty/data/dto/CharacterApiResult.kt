@@ -7,5 +7,5 @@ import com.google.gson.annotations.SerializedName
 data class CharacterApiResult(
     val info: Info,
     @SerializedName("results")
-    val characters: List<Characters>
+    val characters: List<Character>
 )
