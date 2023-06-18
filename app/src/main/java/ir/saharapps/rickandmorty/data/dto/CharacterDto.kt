@@ -2,8 +2,9 @@ package ir.saharapps.rickandmorty.data.dto
 
 import androidx.annotation.Keep
 
+
 @Keep
-data class Result(
+data class CharacterDto(
     val created: String,
     val episode: List<String>,
     val gender: String,
