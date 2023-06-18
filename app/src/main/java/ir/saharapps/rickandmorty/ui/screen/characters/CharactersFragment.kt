@@ -45,7 +45,7 @@ class CharactersFragment: Fragment(R.layout.fragment_characters) {
                         charactersAdapter.submitList(state.characters)
                     }
                     ViewState.FAILED -> {
-                        //todo read from database
+                        charactersViewModel.getLocalCharacters()
                     }
                 }
             }

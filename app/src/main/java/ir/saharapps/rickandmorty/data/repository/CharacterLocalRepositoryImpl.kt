@@ -17,4 +17,8 @@ class CharacterLocalRepositoryImpl @Inject constructor(
     override suspend fun getCharacterById(id: Int): CharacterEntity {
         return characterDao.getCharacterById(id)
     }
+
+    suspend fun addCharacter(characterEntity: CharacterEntity){
+        characterDao.addCharacter(characterEntity)
+    }
 }

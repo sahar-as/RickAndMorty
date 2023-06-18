@@ -1,23 +1,33 @@
 package ir.saharapps.rickandmorty.domain.usecase
 
+import ir.saharapps.rickandmorty.data.local.CharacterEntity
 import ir.saharapps.rickandmorty.data.repository.CharacterLocalRepositoryImpl
 import ir.saharapps.rickandmorty.data.repository.CharactersRemoteRepositoryImpl
 import ir.saharapps.rickandmorty.domain.model.Character
 import ir.saharapps.rickandmorty.domain.model.DetailCharacter
 import ir.saharapps.rickandmorty.domain.model.Episode
-import kotlinx.coroutines.coroutineScope
+import ir.saharapps.rickandmorty.ui.screen.utility.Constants
 import javax.inject.Inject
 
 class CharactersUseCase @Inject constructor(
     private val characterRemoteRepository: CharactersRemoteRepositoryImpl,
     private val characterLocalRepositoryImpl: CharacterLocalRepositoryImpl
 ){
-    suspend fun getAllCharacters(): List<Character>{
-        val repositoryResult = characterRemoteRepository.getCharacters()
+    suspend fun getAllCharacters(fromWhere: String): List<Character>{
 
+        var repositoryData = listOf<CharacterEntity>()
         val characterList = mutableListOf<Character>()
 
-        for(item in repositoryResult){
+        if(fromWhere == Constants.REMOTE){
+            repositoryData = characterRemoteRepository.getCharacters()
+            if(repositoryData.isNotEmpty()){
+                saveCharacterToDB(repositoryData)
+            }
+        }else{
+            repositoryData = characterLocalRepositoryImpl.getCharacters()
+        }
+
+        for(item in repositoryData){
             characterList.add(Character(item.id, item.name, item.image))
         }
         return characterList
@@ -43,5 +53,11 @@ class CharactersUseCase @Inject constructor(
             }
         }
         return episodes
+    }
+
+    private suspend fun saveCharacterToDB(characters: List<CharacterEntity>){
+        for(character in characters){
+            characterLocalRepositoryImpl.addCharacter(character)
+        }
     }
 }
