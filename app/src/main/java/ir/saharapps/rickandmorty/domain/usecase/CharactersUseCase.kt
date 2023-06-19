@@ -6,7 +6,7 @@ import ir.saharapps.rickandmorty.data.repository.CharactersRemoteRepositoryImpl
 import ir.saharapps.rickandmorty.domain.model.Character
 import ir.saharapps.rickandmorty.domain.model.DetailCharacter
 import ir.saharapps.rickandmorty.domain.model.Episode
-import ir.saharapps.rickandmorty.domain.utility.convertCharacterEntityToCharacter
+import ir.saharapps.rickandmorty.domain.utility.toCharacterUi
 import javax.inject.Inject
 
 class CharactersUseCase @Inject constructor(
@@ -52,7 +52,7 @@ class CharactersUseCase @Inject constructor(
     private suspend fun getLocalCharacters(pageNumber: Int): List<Character>{
         var localCharacters = characterLocalRepository.getCharacters(pageNumber)
 
-        return localCharacters.map { localCharacter ->  localCharacter.convertCharacterEntityToCharacter() }
+        return localCharacters.map { localCharacter ->  localCharacter.toCharacterUi() }
     }
 
     private suspend fun getRemoteCharacter(pageNumber: Int){
