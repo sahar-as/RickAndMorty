@@ -6,34 +6,26 @@ import ir.saharapps.rickandmorty.data.repository.CharactersRemoteRepositoryImpl
 import ir.saharapps.rickandmorty.domain.model.Character
 import ir.saharapps.rickandmorty.domain.model.DetailCharacter
 import ir.saharapps.rickandmorty.domain.model.Episode
-import ir.saharapps.rickandmorty.ui.screen.utility.Constants
 import javax.inject.Inject
 
 class CharactersUseCase @Inject constructor(
     private val characterRemoteRepository: CharactersRemoteRepositoryImpl,
     private val characterLocalRepositoryImpl: CharacterLocalRepositoryImpl
 ){
-    suspend fun getAllCharacters(fromWhere: String): List<Character>{
+    suspend fun getAllCharacters(): List<Character>{
 
-        var repositoryData = listOf<CharacterEntity>()
+        var localCharacters = characterLocalRepositoryImpl.getCharacters()
         val characterList = mutableListOf<Character>()
 
-        if(fromWhere == Constants.REMOTE){
-            repositoryData = characterRemoteRepository.getCharacters()
-            if(repositoryData.isNotEmpty()){
-                saveCharacterToDB(repositoryData)
-            }
-        }else{
-            repositoryData = characterLocalRepositoryImpl.getCharacters()
-        }
-
-        for(item in repositoryData){
+        for(item in localCharacters){
             characterList.add(Character(item.id, item.name, item.image))
         }
+
         return characterList
     }
 
     suspend fun getCharacterById(id: Int): DetailCharacter {
+
         val repositoryResult = characterRemoteRepository.getCharacterById(id)
 
         return DetailCharacter(
@@ -44,6 +36,7 @@ class CharactersUseCase @Inject constructor(
     }
 
     suspend fun getEpisodeList(id: Int): List<Episode>{
+
         val repositoryResult = characterRemoteRepository.getCharacterById(id)
         val episodes = mutableListOf<Episode>()
         for(episode in repositoryResult.episode){
@@ -55,7 +48,17 @@ class CharactersUseCase @Inject constructor(
         return episodes
     }
 
+    suspend fun fetchRemoteCharacters(): List<Character>{
+
+        val remoteCharacters = characterRemoteRepository.getCharacters()
+            if(remoteCharacters.isNotEmpty()){
+                saveCharacterToDB(remoteCharacters)
+            }
+        return getAllCharacters()
+    }
+
     private suspend fun saveCharacterToDB(characters: List<CharacterEntity>){
+
         for(character in characters){
             characterLocalRepositoryImpl.addCharacter(character)
         }

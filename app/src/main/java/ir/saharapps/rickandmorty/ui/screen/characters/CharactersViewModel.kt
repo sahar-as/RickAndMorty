@@ -6,8 +6,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import ir.saharapps.rickandmorty.domain.model.CharacterViewState
 import ir.saharapps.rickandmorty.domain.model.ViewState
 import ir.saharapps.rickandmorty.domain.usecase.CharactersUseCase
-import ir.saharapps.rickandmorty.ui.screen.utility.Constants
-import ir.saharapps.rickandmorty.ui.screen.utility.InternetState
 import ir.saharapps.rickandmorty.ui.screen.utility.updateState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,28 +23,28 @@ class CharactersViewModel @Inject constructor(
     val viewStateFlow: StateFlow<CharacterViewState> = _viewStateFlow.asStateFlow()
 
     fun getCharacters(){
-        if(InternetState.isConnected()){
-            viewModelScope.launch(Dispatchers.IO) {
-                _viewStateFlow.updateState { copy(viewState = ViewState.LOADING) }
-                try {
-                    val characters = characterUseCase.getAllCharacters(Constants.REMOTE)
-                    _viewStateFlow.updateState {
-                        copy(viewState = ViewState.SUCCESS, characters = characters)
-                    }
-                }catch (e: Exception){
-                    _viewStateFlow.updateState{copy(viewState = ViewState.FAILED)}
+        viewModelScope.launch(Dispatchers.IO) {
+
+            _viewStateFlow.updateState { copy(viewState = ViewState.LOADING) }
+
+            val characters = characterUseCase.getAllCharacters()
+            if(characters.isNotEmpty()){
+                _viewStateFlow.updateState {
+                    copy(viewState = ViewState.SUCCESS, characters = characters)
                 }
             }
-        }else{
-            getLocalCharacters()
         }
+
+        fetchRemoteCharacter()
     }
 
-    fun getLocalCharacters(){
+    private fun fetchRemoteCharacter(){
         viewModelScope.launch(Dispatchers.IO) {
-            val characters = characterUseCase.getAllCharacters(Constants.LOCAL)
-            _viewStateFlow.updateState {
-                copy(viewState = ViewState.SUCCESS, characters = characters)
+            try {
+                val characters = characterUseCase.fetchRemoteCharacters()
+                _viewStateFlow.updateState { copy(viewState = ViewState.SUCCESS, characters = characters) }
+            }catch (e: Exception){
+                _viewStateFlow.updateState{copy(viewState = ViewState.FAILED)}
             }
         }
     }

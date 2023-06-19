@@ -2,7 +2,7 @@ package ir.saharapps.rickandmorty.data.remote
 
 import ir.saharapps.rickandmorty.data.dto.CharacterApiResult
 import ir.saharapps.rickandmorty.data.dto.CharacterDto
-import ir.saharapps.rickandmorty.utils.APIs
+import ir.saharapps.rickandmorty.data.utility.APIs
 import retrofit2.http.GET
 import retrofit2.http.Path
 

@@ -2,6 +2,7 @@ package ir.saharapps.rickandmorty.ui.screen.characters
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import ir.saharapps.rickandmorty.R
 import ir.saharapps.rickandmorty.databinding.FragmentCharactersBinding
+import ir.saharapps.rickandmorty.domain.model.Character
 import ir.saharapps.rickandmorty.domain.model.ViewState
 import kotlinx.coroutines.launch
 
@@ -45,10 +47,15 @@ class CharactersFragment: Fragment(R.layout.fragment_characters) {
                         charactersAdapter.submitList(state.characters)
                     }
                     ViewState.FAILED -> {
-                        charactersViewModel.getLocalCharacters()
+                        handelFailedState(state.characters)
                     }
                 }
             }
+        }
+    }
+    private fun handelFailedState(characterList: List<Character>){
+        if(characterList.isEmpty()){
+            Toast.makeText(requireContext(), getString(R.string.went_wrong_message), Toast.LENGTH_SHORT).show()
         }
     }
 }

@@ -10,11 +10,13 @@ class CharactersRemoteRepositoryImpl @Inject constructor(
 ): CharactersRepository {
 
     override suspend fun getCharacters(): List<CharacterEntity> {
+
         val characterDtoList = api.getCharacters().character
         return characterDtoList.map { it.convertToCharacterEntity() }
     }
 
     override suspend fun getCharacterById(id: Int): CharacterEntity {
+
         val characterDto = api.getCharacterById(id)
         return characterDto.convertToCharacterEntity()
     }
