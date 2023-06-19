@@ -3,4 +3,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="episode">#75D8FB</color>
+
+    <color name="light_purple">#b39bd8</color>
+    <color name="dark_purple">#350480</color>
+    <color name="toolbar">#382c52</color>
 </resources>
