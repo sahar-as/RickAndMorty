@@ -16,4 +16,10 @@ interface CharacterDao {
 
     @Query("SELECT * FROM  character WHERE id = :id")
     suspend fun getCharacterById(id: Int): CharacterEntity
+
+    @Query("UPDATE character SET is_favorite = :isFavorite WHERE id = :id")
+    suspend fun updateFavoriteState(id: Int, isFavorite: Boolean)
+
+    @Query("SELECT * FROM character WHERE is_favorite = 1")
+    suspend fun getAllFavoriteCharacter(): List<CharacterEntity>
 }
