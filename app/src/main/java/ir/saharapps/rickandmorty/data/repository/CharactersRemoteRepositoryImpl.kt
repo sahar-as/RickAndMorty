@@ -11,7 +11,7 @@ class CharactersRemoteRepositoryImpl @Inject constructor(
 
     override suspend fun getCharacters(): List<CharacterEntity> {
 
-        val characterDtoList = api.getCharacters().character
+        val characterDtoList = api.getCharacters(3).character
         return characterDtoList.map { it.convertToCharacterEntity() }
     }
 
