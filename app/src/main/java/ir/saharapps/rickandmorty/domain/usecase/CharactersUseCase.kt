@@ -1,5 +1,6 @@
 package ir.saharapps.rickandmorty.domain.usecase
 
+import androidx.core.text.isDigitsOnly
 import ir.saharapps.rickandmorty.data.local.CharacterEntity
 import ir.saharapps.rickandmorty.data.repository.CharacterLocalRepositoryImpl
 import ir.saharapps.rickandmorty.data.repository.CharactersRemoteRepositoryImpl
@@ -41,7 +42,7 @@ class CharactersUseCase @Inject constructor(
         val episodes = mutableListOf<Episode>()
         for(episode in repositoryResult.episode){
             val id = episode.split("episode/").lastOrNull()
-            if(!id.isNullOrEmpty()){
+            if(!id.isNullOrEmpty() && id.isDigitsOnly()){
                 episodes.add(Episode(id.toInt(), episode))
             }
         }
