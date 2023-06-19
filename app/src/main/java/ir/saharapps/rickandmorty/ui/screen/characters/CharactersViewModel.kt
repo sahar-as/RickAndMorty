@@ -24,12 +24,25 @@ class CharactersViewModel @Inject constructor(
 
     fun getCharacters(){
         viewModelScope.launch(Dispatchers.IO) {
+
             _viewStateFlow.updateState { copy(viewState = ViewState.LOADING) }
-            try {
-                val characters = characterUseCase.getAllCharacters()
+
+            val characters = characterUseCase.getAllCharacters()
+            if(characters.isNotEmpty()){
                 _viewStateFlow.updateState {
                     copy(viewState = ViewState.SUCCESS, characters = characters)
                 }
+            }
+        }
+
+        fetchRemoteCharacter()
+    }
+
+    private fun fetchRemoteCharacter(){
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val characters = characterUseCase.fetchRemoteCharacters()
+                _viewStateFlow.updateState { copy(viewState = ViewState.SUCCESS, characters = characters) }
             }catch (e: Exception){
                 _viewStateFlow.updateState{copy(viewState = ViewState.FAILED)}
             }
