@@ -22,32 +22,20 @@ class CharactersViewModel @Inject constructor(
     private val _viewStateFlow = MutableStateFlow(CharacterViewState())
     val viewStateFlow: StateFlow<CharacterViewState> = _viewStateFlow.asStateFlow()
 
+
     fun getCharacters(){
         viewModelScope.launch(Dispatchers.IO) {
-
             _viewStateFlow.updateState { copy(viewState = ViewState.LOADING) }
-
-            val characters = characterUseCase.getAllCharacters()
-            if(characters.isNotEmpty()){
-                _viewStateFlow.updateState {
-                    copy(viewState = ViewState.SUCCESS, characters = characters)
-                }
-            }
-        }
-
-        fetchRemoteCharacter()
-    }
-
-    private fun fetchRemoteCharacter(){
-        viewModelScope.launch(Dispatchers.IO) {
             try {
-                val characters = characterUseCase.fetchRemoteCharacters()
-                _viewStateFlow.updateState { copy(viewState = ViewState.SUCCESS, characters = characters) }
+                characterUseCase.getAllCharacters(_viewStateFlow.value.pageNumber) {characters ->
+                    _viewStateFlow.updateState {
+                        copy(viewState = ViewState.SUCCESS, characters = characters, pageNumber = pageNumber)
+                    }
+                }
             }catch (e: Exception){
-                _viewStateFlow.updateState{copy(viewState = ViewState.FAILED)}
+                _viewStateFlow.updateState{copy(viewState = ViewState.FAILED) }
             }
         }
     }
-
 }
 

@@ -2,6 +2,7 @@ package ir.saharapps.rickandmorty.ui.screen.detailcharacter
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -49,7 +50,7 @@ class DetailCharacterFragment: Fragment(R.layout.fragment_detail_character){
                         onSuccessState( viewState.detailCharacter, viewState.episodeList)
                     }
                     ViewState.FAILED -> {
-                        //todo handel fail state
+                        Toast.makeText(requireContext(), getString(R.string.went_wrong_message), Toast.LENGTH_SHORT).show()
                     }
                 }
             }

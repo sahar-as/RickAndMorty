@@ -9,9 +9,9 @@ class CharactersRemoteRepositoryImpl @Inject constructor(
     private val api: RickAndMortyApi,
 ): CharactersRepository {
 
-    override suspend fun getCharacters(): List<CharacterEntity> {
+    override suspend fun getCharacters(pageNumber: Int): List<CharacterEntity> {
 
-        val characterDtoList = api.getCharacters().character
+        val characterDtoList = api.getCharacters(pageNumber).character
         return characterDtoList.map { it.convertToCharacterEntity() }
     }
 
