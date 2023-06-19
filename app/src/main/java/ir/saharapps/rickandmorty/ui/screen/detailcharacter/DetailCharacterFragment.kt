@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import ir.saharapps.rickandmorty.R
 import ir.saharapps.rickandmorty.databinding.FragmentDetailCharacterBinding
-import ir.saharapps.rickandmorty.domain.model.Character
 import ir.saharapps.rickandmorty.domain.model.DetailCharacter
 import ir.saharapps.rickandmorty.domain.model.Episode
 import ir.saharapps.rickandmorty.domain.model.ViewState

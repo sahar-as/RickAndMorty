@@ -27,9 +27,9 @@ class CharactersViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _viewStateFlow.updateState { copy(viewState = ViewState.LOADING) }
             try {
-                characterUseCase.getAllCharacters {characters ->
+                characterUseCase.getAllCharacters(_viewStateFlow.value.pageNumber) {characters ->
                     _viewStateFlow.updateState {
-                        copy(viewState = ViewState.SUCCESS, characters = characters)
+                        copy(viewState = ViewState.SUCCESS, characters = characters, pageNumber = pageNumber)
                     }
                 }
             }catch (e: Exception){

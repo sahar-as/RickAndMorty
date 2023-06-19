@@ -10,7 +10,7 @@ class CharacterLocalRepositoryImpl @Inject constructor(
 
     private val characterDao = database.characterDao()
 
-    override suspend fun getCharacters(): List<CharacterEntity> {
+    override suspend fun getCharacters(pageNumber: Int): List<CharacterEntity> {
         return characterDao.getAllCharacters()
     }
 

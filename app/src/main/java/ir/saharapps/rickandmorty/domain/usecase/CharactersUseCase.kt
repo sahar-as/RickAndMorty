@@ -13,13 +13,13 @@ class CharactersUseCase @Inject constructor(
     private val characterRemoteRepository: CharactersRemoteRepositoryImpl,
     private val characterLocalRepository: CharacterLocalRepositoryImpl
 ){
-    suspend fun getAllCharacters(onDataReceive: (characters: List<Character>) -> Unit){
+    suspend fun getAllCharacters(pageNumber: Int ,onDataReceive: (characters: List<Character>) -> Unit){
 
-        onDataReceive(getLocalCharacters())
+        onDataReceive(getLocalCharacters(pageNumber))
 
-        getRemoteCharacter()
+        getRemoteCharacter(pageNumber)
 
-        onDataReceive(getLocalCharacters())
+        onDataReceive(getLocalCharacters(pageNumber))
 
     }
 
@@ -49,14 +49,14 @@ class CharactersUseCase @Inject constructor(
         return episodes
     }
 
-    private suspend fun getLocalCharacters(): List<Character>{
-        var localCharacters = characterLocalRepository.getCharacters()
+    private suspend fun getLocalCharacters(pageNumber: Int): List<Character>{
+        var localCharacters = characterLocalRepository.getCharacters(pageNumber)
 
         return localCharacters.map { it.convertToCharacter() }
     }
 
-    private suspend fun getRemoteCharacter(){
-        val remoteCharacters = characterRemoteRepository.getCharacters()
+    private suspend fun getRemoteCharacter(pageNumber: Int){
+        val remoteCharacters = characterRemoteRepository.getCharacters(pageNumber)
         for(character in remoteCharacters){
             characterLocalRepository.addCharacter(character)
         }
