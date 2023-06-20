@@ -8,7 +8,7 @@ import androidx.room.Query
 @Dao
 interface CharacterDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addCharacter(character: CharacterEntity)
 
     @Query("SELECT * FROM character")

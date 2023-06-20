@@ -23,4 +23,9 @@
             android:name="CharacterId"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/fragment_favorite"
+        android:name="ir.saharapps.rickandmorty.ui.screen.favorite.FavoriteFragment"
+        android:label="Favorite"
+        tools:layout="@layout/fragment_favorite" />
 </navigation>

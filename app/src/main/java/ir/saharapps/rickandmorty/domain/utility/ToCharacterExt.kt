@@ -7,6 +7,7 @@ fun CharacterEntity.toCharacterUi(): Character {
     return Character(
         id = id,
         name = name,
-        image = image
+        image = image,
+        isFavorite = isFavorite,
     )
 }

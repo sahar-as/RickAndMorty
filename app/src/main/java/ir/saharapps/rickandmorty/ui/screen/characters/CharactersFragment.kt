@@ -8,7 +8,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import ir.saharapps.rickandmorty.R
@@ -27,10 +26,15 @@ class CharactersFragment: Fragment(R.layout.fragment_characters) {
 
         val charactersViewModel: CharactersViewModel by viewModels()
 
-        val charactersAdapter = CharactersAdapter{characterId ->
-            val action = CharactersFragmentDirections.actionCharactersFragmentToMoreInfoFragment(characterId)
-            findNavController().navigate(action)
-        }
+        val charactersAdapter = CharactersAdapter(
+            onClick = {characterId ->
+                val action = CharactersFragmentDirections.actionCharactersFragmentToMoreInfoFragment(characterId)
+                findNavController().navigate(action)
+                },
+            onFavoriteClick = {characterId, isFavorite ->
+                charactersViewModel.updateFavoriteState(characterId, isFavorite)
+            }
+        )
 
         charactersViewModel.getCharacters()
 

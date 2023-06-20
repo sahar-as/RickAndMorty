@@ -49,6 +49,19 @@ class CharactersUseCase @Inject constructor(
         return episodes
     }
 
+    suspend fun updateFavoriteState(id: Int, isFavorite: Boolean): List<Character>{
+
+        characterLocalRepository.updateFavoriteState(id, isFavorite)
+        return getLocalCharacters(id)
+    }
+
+    suspend fun getAllFavorite(): List<Character>{
+
+        val characterEntity = characterLocalRepository.getAllFavoriteCharacter()
+        println("55555555555555 $characterEntity")
+        return characterEntity.map { characterEntity -> characterEntity.toCharacterUi() }
+    }
+
     private suspend fun getLocalCharacters(pageNumber: Int): List<Character>{
         var localCharacters = characterLocalRepository.getCharacters(pageNumber)
 
