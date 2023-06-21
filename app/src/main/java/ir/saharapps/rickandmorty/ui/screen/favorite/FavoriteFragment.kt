@@ -17,14 +17,16 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class FavoriteFragment: Fragment(R.layout.fragment_favorite) {
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    private lateinit var binding: FragmentFavoriteBinding
 
-        super.onViewCreated(view, savedInstanceState)
-        val binding = FragmentFavoriteBinding.bind(view)
+    private lateinit var favoriteAdapter: CharactersAdapter
 
-        val favoriteViewModel: FavoriteViewModel by viewModels()
+    private val favoriteViewModel: FavoriteViewModel by viewModels()
 
-        val favoriteAdapter = CharactersAdapter(
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        favoriteAdapter = CharactersAdapter(
             onClick = {characterId ->
                 val action = FavoriteFragmentDirections.actionFragmentFavoriteToMoreInfoFragment(characterId)
                 findNavController().navigate(action)
@@ -33,9 +35,14 @@ class FavoriteFragment: Fragment(R.layout.fragment_favorite) {
                 favoriteViewModel.updateFavoriteState(characterId)
             }
         )
-
         favoriteViewModel.getAllFavorite()
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        super.onViewCreated(view, savedInstanceState)
+        binding = FragmentFavoriteBinding.bind(view)
+        binding.txtNoFavorite.visibility = View.INVISIBLE
 
         binding.rvFavoriteCharacters.apply {
             layoutManager = LinearLayoutManager(this.context)
@@ -45,9 +52,25 @@ class FavoriteFragment: Fragment(R.layout.fragment_favorite) {
         }
 
         lifecycleScope.launch {
-            favoriteViewModel.viewStateFlow.collect{characters ->
-                favoriteAdapter.submitList(characters)
+            favoriteViewModel.viewStateFlow.collect{state ->
+                when(state.emptyFavList){
+                    true -> { noFaveUi(true) }
+                    false -> {
+                        noFaveUi(false)
+                        favoriteAdapter.submitList(state.characters)
+                    }
+                }
             }
+        }
+    }
+
+    private fun noFaveUi(isListEmpty: Boolean){
+        if (isListEmpty){
+            binding.txtNoFavorite.visibility = View.VISIBLE
+            binding.rvFavoriteCharacters.visibility = View.INVISIBLE
+        }else{
+            binding.txtNoFavorite.visibility = View.INVISIBLE
+            binding.rvFavoriteCharacters.visibility = View.VISIBLE
         }
     }
 }

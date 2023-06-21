@@ -29,18 +29,9 @@ class CharactersAdapter(
         fun bind(character: Character){
             binding.imgCharacterPic.load(character.image)
             binding.txtCharacterName.text = character.name
-
-            val selectedCharacter = getItem(adapterPosition)
-
-            if(selectedCharacter.isFavorite){
-                binding.txtAddFavorite.setText(R.string.remove_from_favorite)
-                binding.txtAddFavorite.setBackgroundResource(R.drawable.round_dark_purple_background)
-                binding.txtAddFavorite.setTextColor(Color.WHITE)
-            }else{
-                binding.txtAddFavorite.setText(R.string.add_to_favorite)
-                binding.txtAddFavorite.setBackgroundResource(R.drawable.round_light_purple_background)
-                binding.txtAddFavorite.setTextColor(Color.BLACK)
-            }
+            binding.txtAddFavorite.text = character.favText
+            binding.txtAddFavorite.setBackgroundResource(character.favBackground)
+            binding.txtAddFavorite.setTextColor(character.favTextColor)
 
             binding.imgCharacterPic.setOnClickListener {
                 onClick(character.id)
