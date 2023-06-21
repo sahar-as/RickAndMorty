@@ -27,5 +27,9 @@
         android:id="@+id/fragment_favorite"
         android:name="ir.saharapps.rickandmorty.ui.screen.favorite.FavoriteFragment"
         android:label="Favorite"
-        tools:layout="@layout/fragment_favorite" />
+        tools:layout="@layout/fragment_favorite" >
+        <action
+            android:id="@+id/action_fragment_favorite_to_moreInfoFragment"
+            app:destination="@id/moreInfoFragment" />
+    </fragment>
 </navigation>

@@ -40,9 +40,11 @@ class CharactersViewModel @Inject constructor(
 
     fun updateFavoriteState(id: Int, isFavorite: Boolean){
         viewModelScope.launch(Dispatchers.IO) {
-            val characters = characterUseCase.updateFavoriteState(id, isFavorite)
-            _viewStateFlow.updateState {
-                copy(viewState = ViewState.SUCCESS, characters = characters, pageNumber = pageNumber)
+            val characters = characterUseCase.updateFavStateReturnAllCharacter(id, isFavorite)
+            if(characters.isNotEmpty()){
+                _viewStateFlow.updateState {
+                    copy(viewState = ViewState.SUCCESS, characters = characters, pageNumber = pageNumber)
+                }
             }
         }
     }

@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,9 +25,12 @@ class FavoriteFragment: Fragment(R.layout.fragment_favorite) {
         val favoriteViewModel: FavoriteViewModel by viewModels()
 
         val favoriteAdapter = CharactersAdapter(
-            onClick = {},
+            onClick = {characterId ->
+                val action = FavoriteFragmentDirections.actionFragmentFavoriteToMoreInfoFragment(characterId)
+                findNavController().navigate(action)
+            },
             onFavoriteClick = {characterId, isFavorite ->
-                //todo remove from favorite list
+                favoriteViewModel.updateFavoriteState(characterId)
             }
         )
 
@@ -45,7 +49,5 @@ class FavoriteFragment: Fragment(R.layout.fragment_favorite) {
                 favoriteAdapter.submitList(characters)
             }
         }
-
-
     }
 }

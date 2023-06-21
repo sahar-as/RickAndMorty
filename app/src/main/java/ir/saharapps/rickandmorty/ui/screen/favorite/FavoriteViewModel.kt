@@ -8,7 +8,6 @@ import ir.saharapps.rickandmorty.domain.usecase.CharactersUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,6 +22,15 @@ class FavoriteViewModel @Inject constructor(
     fun getAllFavorite(){
         viewModelScope.launch(Dispatchers.IO) {
             val characters = useCase.getAllFavorite()
+            if (characters.isNotEmpty()){
+                _viewStateFlow.value = characters
+            }
+        }
+    }
+
+    fun updateFavoriteState(id: Int){
+        viewModelScope.launch(Dispatchers.IO) {
+            val characters = useCase.updateFavStateReturnFavCharacter(id, false)
             if (characters.isNotEmpty()){
                 _viewStateFlow.value = characters
             }
