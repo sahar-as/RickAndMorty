@@ -11,8 +11,8 @@ fun CharacterEntity.toCharacterUi(): Character {
         name = name,
         image = image,
         isFavorite = isFavorite,
-        favTextColor  = if(isFavorite) Color.WHITE else Color.BLACK,
+        favTextColor  = if(isFavorite) R.color.white else R.color.black,
         favBackground = if (isFavorite)  R.drawable.round_dark_purple_background else R.drawable.round_light_purple_background,
-        favText = if (isFavorite) "Remove From favorite" else "Add to favorite"
+        favText = if (isFavorite) R.string.remove_favorite else R.string.add_favorite
     )
 }

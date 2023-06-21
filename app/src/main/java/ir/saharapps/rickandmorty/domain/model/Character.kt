@@ -7,5 +7,5 @@ data class Character (
     val isFavorite: Boolean,
     val favTextColor: Int,
     val favBackground: Int,
-    val favText: String
+    val favText: Int
 )
