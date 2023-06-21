@@ -3,8 +3,6 @@ package ir.saharapps.rickandmorty.data.local
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import ir.saharapps.rickandmorty.data.dto.Location
-import ir.saharapps.rickandmorty.data.dto.Origin
 
 
 @Entity(tableName = "character")
@@ -23,5 +21,7 @@ data class CharacterEntity (
     val species: String,
     val status: String,
     val type: String,
-    val url: String
-)
+    val url: String,
+    @ColumnInfo("is_favorite")
+    val isFavorite: Boolean
+    )

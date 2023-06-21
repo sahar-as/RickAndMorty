@@ -21,4 +21,18 @@ class CharacterLocalRepositoryImpl @Inject constructor(
     suspend fun addCharacter(characterEntity: CharacterEntity){
         characterDao.addCharacter(characterEntity)
     }
+
+    suspend fun updateFavStateReturnFavCharacter(id: Int, isFavorite: Boolean): List<CharacterEntity>{
+        characterDao.updateFavoriteState(id, isFavorite)
+        return characterDao.getAllFavoriteCharacter()
+    }
+
+    suspend fun updateFavStateReturnAllCharacter(id: Int, isFavorite: Boolean): List<CharacterEntity>{
+        characterDao.updateFavoriteState(id, isFavorite)
+        return characterDao.getAllCharacters()
+    }
+
+    suspend fun getAllFavoriteCharacter(): List<CharacterEntity>{
+        return characterDao.getAllFavoriteCharacter()
+    }
 }

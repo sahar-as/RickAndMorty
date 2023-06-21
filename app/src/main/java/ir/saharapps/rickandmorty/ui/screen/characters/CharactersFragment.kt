@@ -7,7 +7,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import ir.saharapps.rickandmorty.R
 import ir.saharapps.rickandmorty.databinding.FragmentCharactersBinding
@@ -25,16 +26,23 @@ class CharactersFragment: Fragment(R.layout.fragment_characters) {
 
         val charactersViewModel: CharactersViewModel by viewModels()
 
-        val charactersAdapter = CharactersAdapter{characterId ->
-            val action = CharactersFragmentDirections.actionCharactersFragmentToMoreInfoFragment(characterId)
-            findNavController().navigate(action)
-        }
+        val charactersAdapter = CharactersAdapter(
+            onClick = {characterId ->
+                val action = CharactersFragmentDirections.actionCharactersFragmentToMoreInfoFragment(characterId)
+                findNavController().navigate(action)
+                },
+            onFavoriteClick = {characterId, isFavorite ->
+                charactersViewModel.updateFavoriteState(characterId, isFavorite)
+            }
+        )
 
         charactersViewModel.getCharacters()
 
         binding.rvCharacters.apply {
-            layoutManager = GridLayoutManager(this.context, 2)
+            layoutManager = LinearLayoutManager(this.context)
             adapter = charactersAdapter
+            val dividerItemDecoration = DividerItemDecoration(this.context, LinearLayoutManager.VERTICAL)
+            addItemDecoration(dividerItemDecoration)
         }
 
         lifecycleScope.launch{

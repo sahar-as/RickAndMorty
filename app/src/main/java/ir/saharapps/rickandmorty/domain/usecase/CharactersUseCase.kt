@@ -49,13 +49,32 @@ class CharactersUseCase @Inject constructor(
         return episodes
     }
 
-    private suspend fun getLocalCharacters(pageNumber: Int): List<Character>{
-        var localCharacters = characterLocalRepository.getCharacters(pageNumber)
+    suspend fun updateFavStateReturnFavCharacter(id: Int, isFavorite: Boolean): List<Character> {
 
+        val characterEntity = characterLocalRepository.updateFavStateReturnFavCharacter(id, isFavorite)
+        return characterEntity.map { characterEntity -> characterEntity.toCharacterUi() }
+    }
+
+    suspend fun updateFavStateReturnAllCharacter(id: Int, isFavorite: Boolean): List<Character> {
+
+        val characterEntity = characterLocalRepository.updateFavStateReturnAllCharacter(id, isFavorite)
+        return characterEntity.map { characterEntity -> characterEntity.toCharacterUi() }
+    }
+
+    suspend fun getAllFavorite(): List<Character>{
+
+        val characterEntity = characterLocalRepository.getAllFavoriteCharacter()
+        return characterEntity.map { characterEntity -> characterEntity.toCharacterUi() }
+    }
+
+    private suspend fun getLocalCharacters(pageNumber: Int): List<Character>{
+
+        var localCharacters = characterLocalRepository.getCharacters(pageNumber)
         return localCharacters.map { localCharacter ->  localCharacter.toCharacterUi() }
     }
 
     private suspend fun getRemoteCharacter(pageNumber: Int){
+
         val remoteCharacters = characterRemoteRepository.getCharacters(pageNumber)
         for(character in remoteCharacters){
             characterLocalRepository.addCharacter(character)

@@ -3,7 +3,7 @@ package ir.saharapps.rickandmorty.data.utility
 import ir.saharapps.rickandmorty.data.dto.CharacterDto
 import ir.saharapps.rickandmorty.data.local.CharacterEntity
 
-fun CharacterDto.convertToCharacterEntity(): CharacterEntity{
+fun CharacterDto.toCharacterEntity(): CharacterEntity{
     return CharacterEntity(
         id = id,
         created = created,
@@ -16,6 +16,7 @@ fun CharacterDto.convertToCharacterEntity(): CharacterEntity{
         species = species,
         status = status,
         type = type,
-        url = url
+        url = url,
+        isFavorite = false
     )
 }
