@@ -2,6 +2,7 @@ package ir.saharapps.rickandmorty.ui.screen.favorite
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -42,7 +43,7 @@ class FavoriteFragment: Fragment(R.layout.fragment_favorite) {
 
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentFavoriteBinding.bind(view)
-        binding.txtNoFavorite.visibility = View.INVISIBLE
+        binding.txtEmptyState.visibility = View.INVISIBLE
 
         binding.rvFavoriteCharacters.apply {
             layoutManager = LinearLayoutManager(this.context)
@@ -53,24 +54,10 @@ class FavoriteFragment: Fragment(R.layout.fragment_favorite) {
 
         lifecycleScope.launch {
             favoriteViewModel.viewStateFlow.collect{state ->
-                when(state.emptyFavList){
-                    true -> { noFaveUi(true) }
-                    false -> {
-                        noFaveUi(false)
-                        favoriteAdapter.submitList(state.characters)
-                    }
-                }
+                binding.txtEmptyState.isVisible = state.emptyFavList
+                binding.rvFavoriteCharacters.isVisible = !state.emptyFavList
+                favoriteAdapter.submitList(state.characters)
             }
-        }
-    }
-
-    private fun noFaveUi(isListEmpty: Boolean){
-        if (isListEmpty){
-            binding.txtNoFavorite.visibility = View.VISIBLE
-            binding.rvFavoriteCharacters.visibility = View.INVISIBLE
-        }else{
-            binding.txtNoFavorite.visibility = View.INVISIBLE
-            binding.rvFavoriteCharacters.visibility = View.VISIBLE
         }
     }
 }

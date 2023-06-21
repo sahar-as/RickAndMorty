@@ -7,7 +7,7 @@
     tools:context=".ui.screen.favorite.FavoriteFragment">
 
     <TextView
-        android:id="@+id/txt_no_favorite"
+        android:id="@+id/txt_empty_state"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
