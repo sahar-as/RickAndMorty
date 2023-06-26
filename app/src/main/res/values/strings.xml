@@ -6,11 +6,12 @@
     <string name="character_species">Character Species</string>
     <string name="character_gender">Character Gender</string>
     <string name="went_wrong_message">Something wants wrong please try later</string>
-    <string name="add_to_favorite">Add To Favorite</string>
-    <string name="remove_from_favorite">Remove From Favorite</string>
+    <string name="add_to_favorite">Add</string>
+    <string name="remove_from_favorite">Remove</string>
     <string name="favorite_character">Favorite Character</string>
     <string name="favorite">Favorite</string>
     <string name="no_favorite">There isn\'t any Favorite Character to show</string>
     <string name="remove_favorite">Remove From favorite</string>
     <string name="add_favorite">Add to favorite</string>
+    <string name="least_favorite">Least favorite</string>
 </resources>

@@ -9,7 +9,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.yandex.metrica.YandexMetrica
 import dagger.hilt.android.AndroidEntryPoint
+import ir.saharapps.commons.general.tracking.EventName.TRACKING_FAVORITE_CLICK
+import ir.saharapps.commons.general.tracking.sendEvent
 import ir.saharapps.rickandmorty.R
 import ir.saharapps.rickandmorty.databinding.FragmentCharactersBinding
 import ir.saharapps.rickandmorty.domain.model.Character

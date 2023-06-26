@@ -3,6 +3,7 @@ package ir.saharapps.rickandmorty.ui.screen.characters
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -29,9 +30,9 @@ class CharactersAdapter(
         fun bind(character: Character){
             binding.imgCharacterPic.load(character.image)
             binding.txtCharacterName.text = character.name
-            binding.txtAddFavorite.text = character.favText.toString()
+            binding.txtAddFavorite.text = binding.root.context.getString(character.favText)
             binding.txtAddFavorite.setBackgroundResource(character.favBackground)
-            binding.txtAddFavorite.setTextColor(character.favTextColor)
+            binding.txtAddFavorite.setTextColor(ContextCompat.getColor(binding.root.context, character.favTextColor))
 
             binding.imgCharacterPic.setOnClickListener {
                 onClick(character.id)

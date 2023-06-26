@@ -3,6 +3,9 @@ package ir.saharapps.rickandmorty.ui.screen.characters
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ir.saharapps.commons.general.tracking.EventName
+import ir.saharapps.commons.general.tracking.sendEvent
+import ir.saharapps.rickandmorty.R
 import ir.saharapps.rickandmorty.domain.model.CharacterViewState
 import ir.saharapps.rickandmorty.domain.model.ViewState
 import ir.saharapps.rickandmorty.domain.usecase.CharactersUseCase
@@ -39,6 +42,11 @@ class CharactersViewModel @Inject constructor(
     }
 
     fun updateFavoriteState(id: Int, isFavorite: Boolean){
+
+
+        sendEvent(EventName.TRACKING_FAVORITE_CLICK)
+        sendEvent(EventName.TRACKING_FAVORITE_CLICK, isFavorite.toString())
+
         viewModelScope.launch(Dispatchers.IO) {
             val characters = characterUseCase.updateFavStateReturnAllCharacter(id, isFavorite)
             if(characters.isNotEmpty()){
