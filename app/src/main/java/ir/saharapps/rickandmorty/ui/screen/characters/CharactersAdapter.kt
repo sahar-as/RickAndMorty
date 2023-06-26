@@ -29,7 +29,7 @@ class CharactersAdapter(
         fun bind(character: Character){
             binding.imgCharacterPic.load(character.image)
             binding.txtCharacterName.text = character.name
-            binding.txtAddFavorite.text = character.favText
+            binding.txtAddFavorite.text = character.favText.toString()
             binding.txtAddFavorite.setBackgroundResource(character.favBackground)
             binding.txtAddFavorite.setTextColor(character.favTextColor)
 

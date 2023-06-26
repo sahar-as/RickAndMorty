@@ -9,5 +9,6 @@ class RickMortyApplication: Application(){
     override fun onCreate() {
         super.onCreate()
         InternetState.initialize(this)
+
     }
 }
